@@ -5,6 +5,7 @@ import ImageUploader from "@/components/ImageUploader";
 import ViewpointController, { ViewpointType } from "@/components/ViewpointController";
 import ResultViewer from "@/components/ResultViewer";
 import FeedbackInput from "@/components/FeedbackInput";
+import { compressImage } from "@/lib/compressImage";
 
 export default function Page() {
   const [image, setImage] = useState<File | null>(null);
@@ -24,8 +25,9 @@ export default function Page() {
     setError(null);
     
     try {
+      const compressed = await compressImage(image);
       const formData = new FormData();
-      formData.append("image", image);
+      formData.append("image", compressed);
       formData.append("viewpoint", viewpoint);
 
       const response = await fetch("/api/generate", {
@@ -66,8 +68,9 @@ export default function Page() {
     setError(null);
     
     try {
+      const compressed = await compressImage(image);
       const formData = new FormData();
-      formData.append("image", image);
+      formData.append("image", compressed);
       formData.append("viewpoint", viewpoint);
       formData.append("feedback", feedbackText);
 
