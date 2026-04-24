@@ -164,7 +164,7 @@ export async function POST(req: NextRequest) {
     async function callWithFallback(
       primaryModel: string,
       fallbackModel: string,
-      params: Parameters<typeof ai.models.generateContent>[0],
+      params: Omit<Parameters<typeof ai.models.generateContent>[0], 'model'>,
       timeoutMs: number
     ) {
       const withTimeout = (model: string) =>
