@@ -160,37 +160,72 @@ export async function POST(req: NextRequest) {
     const ai = new GoogleGenAI({ apiKey });
     const startTime = Date.now();
 
+    // ── Helper: timeout-aware generateContent with fallback ──────────────
+    async function callWithFallback(
+      primaryModel: string,
+      fallbackModel: string,
+      params: Parameters<typeof ai.models.generateContent>[0],
+      timeoutMs: number
+    ) {
+      const withTimeout = (model: string) =>
+        Promise.race([
+          ai.models.generateContent({ ...params, model }),
+          new Promise<never>((_, reject) =>
+            setTimeout(
+              () => reject(new Error(`Timeout after ${timeoutMs / 1000}s (model: ${model})`)),
+              timeoutMs
+            )
+          ),
+        ]);
+
+      try {
+        return await withTimeout(primaryModel);
+      } catch (primaryErr) {
+        console.warn(`[viewpoint] primary model failed (${primaryModel}):`, primaryErr);
+        console.log(`[viewpoint] retrying with fallback model: ${fallbackModel}`);
+        return await withTimeout(fallbackModel);
+      }
+    }
+
     // Step 1: Analysis (vision + structured prompt generation)
-    const analysisResponse = await ai.models.generateContent({
-      model: MODEL_ANALYSIS,
-      config: { systemInstruction: systemPrompt },
-      contents: [
-        {
-          role: "user",
-          parts: [
-            { inlineData: { mimeType, data: imageBase64 } },
-            { text: buildAnalysisPrompt(viewpoint, feedback) },
-          ],
-        },
-      ],
-    });
+    const analysisResponse = await callWithFallback(
+      MODEL_ANALYSIS,
+      MODEL_ANALYSIS_FALLBACK,
+      {
+        config: { systemInstruction: systemPrompt },
+        contents: [
+          {
+            role: "user",
+            parts: [
+              { inlineData: { mimeType, data: imageBase64 } },
+              { text: buildAnalysisPrompt(viewpoint, feedback) },
+            ],
+          },
+        ],
+      },
+      TIMEOUT_ANALYSIS
+    );
 
     const executionPrompt = analysisResponse.text ?? "";
 
     // Step 2: Image generation (image I/O)
-    const generationResponse = await ai.models.generateContent({
-      model: MODEL_IMAGE_GEN,
-      config: { responseModalities: ["IMAGE", "TEXT"] },
-      contents: [
-        {
-          role: "user",
-          parts: [
-            { inlineData: { mimeType, data: imageBase64 } },
-            { text: buildGenerationPrompt(executionPrompt) },
-          ],
-        },
-      ],
-    });
+    const generationResponse = await callWithFallback(
+      MODEL_IMAGE_GEN,
+      MODEL_IMAGE_GEN_FALLBACK,
+      {
+        config: { responseModalities: ["IMAGE", "TEXT"] },
+        contents: [
+          {
+            role: "user",
+            parts: [
+              { inlineData: { mimeType, data: imageBase64 } },
+              { text: buildGenerationPrompt(executionPrompt) },
+            ],
+          },
+        ],
+      },
+      TIMEOUT_IMAGE_GEN
+    );
 
     const elapsed = Date.now() - startTime;
     console.log(
