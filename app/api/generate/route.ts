@@ -4,8 +4,12 @@ import { buildSystemPrompt, loadProtocol } from "@/lib/buildSystemPrompt";
 
 export const runtime = "nodejs";
 
-const ANALYSIS_MODEL = "gemini-2.5-pro";
-const GENERATION_MODEL = "gemini-3.1-flash-image-preview"; // Nano Banana 2 (Gemini 3.1 Flash Image Preview)
+const MODEL_ANALYSIS = 'gemini-3.1-pro-preview';
+const MODEL_IMAGE_GEN = 'gemini-3.1-flash-image-preview';
+const MODEL_ANALYSIS_FALLBACK = 'gemini-2.5-pro-preview';
+const MODEL_IMAGE_GEN_FALLBACK = 'gemini-2.5-flash-image';
+const TIMEOUT_ANALYSIS = 120000;
+const TIMEOUT_IMAGE_GEN = 180000;
 
 // Protocol Step 2 매핑 — 시점별 좌표·렌즈·우선순위 (Task 4.1~4.2)
 const VIEWPOINT_SPEC: Record<string, { label: string; instruction: string }> = {
@@ -156,9 +160,9 @@ export async function POST(req: NextRequest) {
     const ai = new GoogleGenAI({ apiKey });
     const startTime = Date.now();
 
-    // Step 1: Analysis — gemini-2.5-pro (vision + structured prompt generation)
+    // Step 1: Analysis (vision + structured prompt generation)
     const analysisResponse = await ai.models.generateContent({
-      model: ANALYSIS_MODEL,
+      model: MODEL_ANALYSIS,
       config: { systemInstruction: systemPrompt },
       contents: [
         {
@@ -173,9 +177,9 @@ export async function POST(req: NextRequest) {
 
     const executionPrompt = analysisResponse.text ?? "";
 
-    // Step 2: Image generation — gemini-2.0-flash-exp (image I/O)
+    // Step 2: Image generation (image I/O)
     const generationResponse = await ai.models.generateContent({
-      model: GENERATION_MODEL,
+      model: MODEL_IMAGE_GEN,
       config: { responseModalities: ["IMAGE", "TEXT"] },
       contents: [
         {
