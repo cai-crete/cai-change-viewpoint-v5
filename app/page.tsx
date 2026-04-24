@@ -38,7 +38,7 @@ export default function Page() {
         data = await response.json();
       } catch (e) {
         if (response.status === 413) {
-          throw new Error("이미지 용량이 너무 큽니다 (1~2MB 이하 권장). 더 작은 이미지를 사용해주세요.");
+          throw new Error("이미지 용량이 너무 큽니다 (최대 10MB 지원). 더 작은 이미지를 사용해주세요.");
         }
         throw new Error(`서버 오류가 발생했습니다 (${response.status})`);
       }
@@ -81,7 +81,7 @@ export default function Page() {
         data = await response.json();
       } catch (e) {
         if (response.status === 413) {
-          throw new Error("이미지 용량이 너무 큽니다 (1~2MB 이하 권장). 더 작은 이미지를 사용해주세요.");
+          throw new Error("이미지 용량이 너무 큽니다 (최대 10MB 지원). 더 작은 이미지를 사용해주세요.");
         }
         throw new Error(`서버 오류가 발생했습니다 (${response.status})`);
       }
