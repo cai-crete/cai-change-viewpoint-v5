@@ -1,0 +1,41 @@
+
+```
+GOAL:
+Change the angle of view of the provided architectural image to a "Right-side Aerial View (3 o'clock direction)" without altering the building's original geometry, materials, or style.
+
+ACTION PROTOCOL:
+[1] Viewpoint Delta (Δ)
+- V0 (Current): Azimuth 05:30, Eye-level (Height 1.6m).
+- V1 (Target): Azimuth 03:00 (Right side), High Altitude (>150m), Pitch -45°.
+
+[2] Coordinate Anchoring & Scenario Mapping
+- Target: High-Altitude Aerial View from the 03:00 Vector.
+- Optic Gear: Mount 32mm Lens on Phase One System.
+- Focus: Contextual layout and roof geometry analysis, specifically capturing the lateral depth of the rhythmic multi-gable structure.
+
+[3] Reality Mapping & Blind Spot Logic
+- Geometry Sanctuary: Strictly lock the immutable constants: wooden glulam frames, transparent glass curtain walls, stone masonry base, and dark metal roof panels.
+- Perspective Enforcement: Apply standard 3-point perspective suitable for high-altitude photography.
+- Blind Spot Inference: Fully expose the lateral depth of the overlapping triangular gables. Reconstruct the rear landscape and lake connection extending from the right side, based on the front facade's Design DNA.
+- Relighting: Lock original textures. Apply Relighting to match the new solar angle from the right-side upper atmosphere, reflecting soft natural light off the vast side glass facade and sloping roof.
+```
+-----
+
+GOAL:
+Change the angle of view of the provided architectural image to a "Top-Down Aerial View (Satellite View)" without altering the building's original geometry, materials, or style.
+
+ACTION PROTOCOL:
+[1] Viewpoint Delta (Δ)
+- V0 (Current): Azimuth 05:30, Eye-level (Height 1.6m).
+- V1 (Target): Azimuth N/A (Zenith), High Altitude (300m), Pitch -90°.
+
+[2] Coordinate Anchoring & Scenario Mapping
+- Target: Top-Down Aerial View (Layout/Site Plan View).
+- Optic Gear: Mount 32mm Lens on Phase One System.
+- Focus: Contextual layout and roof geometry analysis, specifically capturing the geometric footprint of the rhythmic multi-gable structure and its spatial relationship with the surrounding landscape (lake, pathways, gardens).
+
+[3] Reality Mapping & Blind Spot Logic
+- Geometry Sanctuary: Strictly lock the immutable constants: dark metal roof panels, wooden glulam frame edges, and the precise building footprint.
+- Perspective Enforcement: Apply 1-Point Perspective (or strict Orthographic projection) to accurately represent the site layout and roof plan without vertical distortion.
+- Blind Spot Inference: Fully expose the top-down geometric layout of the intersecting triangular gables. Reconstruct the complete 360-degree surrounding landscape, including the rear lake, front grassy area, pathways, and vegetation, logically extending the context inferred from the source image.
+- Relighting: Lock original textures. Apply Relighting to match an overhead or high-angle solar position, emphasizing the ridges and valleys of the dark metal roof through subtle highlights, and clearly delineating the building's cast shadow onto the surrounding ground to create a sense of depth. 

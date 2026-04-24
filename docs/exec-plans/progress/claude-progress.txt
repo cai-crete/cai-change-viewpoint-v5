@@ -1,0 +1,18 @@
+# Claude Progress — FINAL
+Date: 2026-04-24
+
+## 프로젝트 완료
+
+VIEWPOINT (N05) 전체 개발 완료.
+
+## 최종 상태
+- TypeScript: 오류 없음
+- npm run build: 성공
+- 서버: http://localhost:3000 실행 중
+- GEMINI_API_KEY: 등록 완료
+
+## 모델 변경 이력
+- GENERATION_MODEL: gemini-2.0-flash-exp → gemini-3.1-flash-image-preview (사용자 수정)
+
+## 완료 보고서 위치
+docs/exec-plans/completed/PROJECT-FINAL-REPORT.md
